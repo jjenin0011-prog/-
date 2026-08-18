@@ -80,6 +80,13 @@
           font-weight: 600;
           cursor: pointer;
           user-select: none;
+          transition: all 0.2s ease;
+        }
+
+        .audio-pill.playing {
+          background: #991b1b;
+          color: #ffffff;
+          box-shadow: 0 0 10px rgba(153, 27, 27, 0.6);
         }
 
         .editorial-hero {
@@ -239,12 +246,15 @@
 </head>
 <body>
 
+    <!-- رابط ملف الصوت الذي قمتِ برفعه -->
+    <audio id="bgAudio" loop src="song.mp3"></audio>
+
     <div class="phone-mockup">
         <div class="ambient-glow"></div>
 
         <div class="top-nav">
             <div class="nav-brand">أرشيف <span class="accent">الذاكرة</span></div>
-            <div class="audio-pill" onclick="toggleAudio()">♪ الخلفية الصوتية</div>
+            <div class="audio-pill" id="audioBtn" onclick="toggleAudio()">♪ الخلفية الصوتية</div>
         </div>
 
         <div class="editorial-hero">
@@ -269,13 +279,8 @@
     </div>
 
     <script>
-        // ==========================================
-        // قائمة الأسماء والبيانات (تستطيعين إضافة أي عدد هنا)
-        // ==========================================
-        const records = [
-            // مثال على السجلات المسجلة في النظام:
-            // { id: 1, name: "اسم الشخص", city: "جنين", location: "جنين — المكان", date: "التاريخ", age: "العمر", status: "التوثيق" }
-        ];
+        // هنا تُضيفين بيانات الأشخاص
+        const records = [];
 
         let currentCity = 'الكل';
 
@@ -283,19 +288,16 @@
             const feed = document.getElementById('feedArea');
             feed.innerHTML = '';
 
-            // إذا لم يكتب الزائر شيئاً بعد في البحث
             if (!isSearching) {
                 feed.innerHTML = '<div class="empty-placeholder">🔍 استخدم مربع البحث أعلاه للبحث في السجلات التوثيقية.</div>';
                 return;
             }
 
-            // إذا بحث ولم يجد نتائج
             if (data.length === 0) {
                 feed.innerHTML = '<div class="empty-placeholder">لم يتم العثور على سجلات مطابقة لنص البحث.</div>';
                 return;
             }
 
-            // عرض البطاقات المطابقة للبحث
             data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'hero-card';
@@ -341,7 +343,21 @@
         }
 
         function toggleAudio() {
-            alert("تم تشغيل/إيقاف الخلفية الصوتية الأرشيفية.");
+            const audio = document.getElementById('bgAudio');
+            const btn = document.getElementById('audioBtn');
+
+            if (audio.paused) {
+                audio.play().then(() => {
+                    btn.classList.add('playing');
+                    btn.innerText = '⏸ إيقاف الصوت';
+                }).catch(err => {
+                    alert('تأكدي من رفع ملف الصوت باسم song.mp3 في مشروعك على GitHub!');
+                });
+            } else {
+                audio.pause();
+                btn.classList.remove('playing');
+                btn.innerText = '♪ الخلفية الصوتية';
+            }
         }
     </script>
 </body>
