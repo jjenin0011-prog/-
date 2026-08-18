@@ -83,8 +83,11 @@
           transition: all 0.2s ease;
         }
 
-      <audio id="bgAudio" loop src="song.mp3.mp3"></audio>
-
+        .audio-pill.playing {
+          background: #991b1b;
+          color: #ffffff;
+          box-shadow: 0 0 10px rgba(153, 27, 27, 0.6);
+        }
 
         .editorial-hero {
           padding: 28px 22px 20px;
@@ -243,8 +246,8 @@
 </head>
 <body>
 
-    <!-- رابط ملف الصوت الذي قمتِ برفعه -->
-    <audio id="bgAudio" loop src="song.mp3"></audio>
+    <!-- تم ضبط اسم الملف ليتطابق مع song.mp3.mp3 -->
+    <audio id="bgAudio" preload="auto" loop src="song.mp3.mp3"></audio>
 
     <div class="phone-mockup">
         <div class="ambient-glow"></div>
@@ -276,7 +279,6 @@
     </div>
 
     <script>
-        // هنا تُضيفين بيانات الأشخاص
         const records = [];
 
         let currentCity = 'الكل';
@@ -344,12 +346,20 @@
             const btn = document.getElementById('audioBtn');
 
             if (audio.paused) {
-                audio.play().then(() => {
-                    btn.classList.add('playing');
-                    btn.innerText = '⏸ إيقاف الصوت';
-                }).catch(err => {
-                    alert('تأكدي من رفع ملف الصوت باسم song.mp3 في مشروعك على GitHub!');
-                });
+                // إجبار إعادة التحميل للتغلب على قيود Safari
+                audio.load();
+                
+                let playPromise = audio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        btn.classList.add('playing');
+                        btn.innerText = '⏸ إيقاف الصوت';
+                    }).catch(error => {
+                        console.log(error);
+                        alert('يرجى الضغط مرة أخرى لتأكيد تشغيل الصوت.');
+                    });
+                }
             } else {
                 audio.pause();
                 btn.classList.remove('playing');
