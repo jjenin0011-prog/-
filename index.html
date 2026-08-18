@@ -134,7 +134,7 @@
           border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: 12px;
           padding: 12px;
-          width: 180px;
+          width: 190px;
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
           z-index: 1000;
           text-align: right;
@@ -146,12 +146,18 @@
           margin-bottom: 2px;
         }
 
-        .dropdown-menu .email-text {
+        .dropdown-menu .email-link {
+          display: block;
           font-size: 8.5pt;
-          color: #ffffff;
+          color: #60a5fa;
           font-weight: 700;
           margin-bottom: 8px;
           word-break: break-all;
+          text-decoration: none;
+        }
+
+        .dropdown-menu .email-link:hover {
+          text-decoration: underline;
         }
 
         .dropdown-menu hr {
@@ -160,7 +166,7 @@
           margin: 8px 0;
         }
 
-        .dropdown-menu a {
+        .dropdown-menu a.action-link {
           display: block;
           text-decoration: none;
           color: #ef4444;
@@ -169,7 +175,7 @@
           transition: color 0.2s;
         }
 
-        .dropdown-menu a:hover {
+        .dropdown-menu a.action-link:hover {
           color: #f87171;
         }
 
@@ -495,9 +501,10 @@
                     <div class="menu-btn" id="menuBtn" onclick="toggleMenu(event)">⋮</div>
                     <div class="dropdown-menu" id="dropdownMenu">
                         <p>للتواصل معنا:</p>
-                        <div class="email-text">jjenin0011@gmail.com</div>
+                        <!-- تم تحويل الإيميل إلى رابط قابل للضغط يفتح تطبيق البريد مباشرة -->
+                        <a href="mailto:jjenin0011@gmail.com" class="email-link">jjenin0011@gmail.com</a>
                         <hr>
-                        <a href="https://forms.gle/z7C62xPRrSTyChJJ7" target="_blank">+ إضافة شهيد</a>
+                        <a href="https://forms.gle/z7C62xPRrSTyChJJ7" target="_blank" class="action-link">+ إضافة شهيد</a>
                     </div>
                 </div>
             </div>
