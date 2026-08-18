@@ -191,7 +191,7 @@
         }
 
         .feed-area {
-          padding: 0 22px 20px;
+          padding: 0 22px 28px;
           min-height: 200px;
         }
 
@@ -253,15 +253,6 @@
           font-size: 8pt;
           color: #9ca3af;
         }
-
-        .adobe-footer {
-          padding: 18px;
-          text-align: center;
-          border-top: 1px solid rgba(255, 255, 255, 0.04);
-          background: #0b0b0e;
-          font-size: 7.5pt;
-          color: #4b5563;
-        }
     </style>
 </head>
 <body>
@@ -302,17 +293,11 @@
         </div>
 
         <div class="feed-area" id="feedArea">
-            <!-- البطاقات تتولد تلقائياً عبر البرمجة -->
-        </div>
-
-        <div class="adobe-footer">
-            DESIGNED WITH EDITORIAL PRECISION<br>
-            حقوق حفظ الذاكرة الوطنية محفوظة © 2026
+            <!-- البطاقات تتولد تلقائياً -->
         </div>
     </div>
 
     <script>
-        // قاعدة البيانات
         const records = [
             { id: 1, name: "جنى مجد عصاعصة", city: "جنين", location: "جنين — حي الهدف", date: "11 ديسمبر 2022", age: "16 سنة", status: "موثق بالكامل" },
             { id: 2, name: "جنى زكارنة", city: "جنين", location: "جنين — الحي الشرقي", date: "11 ديسمبر 2022", age: "16 سنة", status: "موثق بالكامل" }
@@ -371,7 +356,6 @@
             alert("تم تشغيل/إيقاف الخلفية الصوتية الأرشيفية.");
         }
 
-        // تشغيل العرض الأولي
         renderCards(records);
     </script>
 </body>
