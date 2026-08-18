@@ -78,6 +78,8 @@
           border-radius: 30px;
           font-size: 8.5pt;
           font-weight: 600;
+          cursor: pointer;
+          user-select: none;
         }
 
         .editorial-hero {
@@ -147,13 +149,19 @@
 
         .custom-input {
           width: 100%;
-          padding: 10px 14px;
-          background-color: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          padding: 12px 14px;
+          background-color: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.15);
           border-radius: 10px;
-          color: #e5e7eb;
-          font-size: 9pt;
+          color: #ffffff;
+          font-size: 9.5pt;
           margin-bottom: 10px;
+          outline: none;
+        }
+
+        .custom-input:focus {
+          border-color: #991b1b;
+          box-shadow: 0 0 8px rgba(153, 27, 27, 0.4);
         }
 
         .chip-group {
@@ -164,13 +172,15 @@
         .chip {
           flex: 1;
           text-align: center;
-          padding: 6px 4px;
-          font-size: 8pt;
+          padding: 8px 4px;
+          font-size: 8.5pt;
           color: #9ca3af;
           background: rgba(255, 255, 255, 0.02);
           border: 1px solid rgba(255, 255, 255, 0.05);
           border-radius: 8px;
           font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
         }
 
         .chip.active {
@@ -182,6 +192,7 @@
 
         .feed-area {
           padding: 0 22px 20px;
+          min-height: 200px;
         }
 
         .hero-card {
@@ -192,6 +203,13 @@
           margin-bottom: 12px;
           position: relative;
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+          cursor: pointer;
+          transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .hero-card:active {
+          transform: scale(0.98);
+          border-color: rgba(153, 27, 27, 0.5);
         }
 
         .hero-card::after {
@@ -253,7 +271,7 @@
 
         <div class="top-nav">
             <div class="nav-brand">أرشيف <span class="accent">الذاكرة</span></div>
-            <div class="audio-pill">♪ الخلفية الصوتية</div>
+            <div class="audio-pill" onclick="toggleAudio()">♪ الخلفية الصوتية</div>
         </div>
 
         <div class="editorial-hero">
@@ -263,7 +281,7 @@
 
             <div class="stats-row">
                 <div class="stat-box">
-                    <div class="stat-number">12</div>
+                    <div class="stat-number" id="total-count">2</div>
                     <div class="stat-label">سجل موثق</div>
                 </div>
                 <div class="stat-box">
@@ -274,39 +292,17 @@
         </div>
 
         <div class="toolbar-area">
-            <input type="text" class="custom-input" value="🔍 ابحث عن اسم الشهيد أو الموقع..." readonly>
+            <input type="text" id="searchInput" class="custom-input" placeholder="🔍 ابحث عن اسم الشهيد أو الموقع..." oninput="filterData()">
             <div class="chip-group">
-                <div class="chip active">الكل</div>
-                <div class="chip">جنين</div>
-                <div class="chip">نابلس</div>
-                <div class="chip">الخليل</div>
+                <div class="chip active" onclick="setFilter('الكل', this)">الكل</div>
+                <div class="chip" onclick="setFilter('جنين', this)">جنين</div>
+                <div class="chip" onclick="setFilter('نابلس', this)">نابلس</div>
+                <div class="chip" onclick="setFilter('الخليل', this)">الخليل</div>
             </div>
         </div>
 
-        <div class="feed-area">
-            <div class="hero-card">
-                <div class="card-meta">
-                    <div class="card-tag">جنين — حي الهدف</div>
-                    <div class="card-date">11 ديسمبر 2022</div>
-                </div>
-                <div class="card-title-text">جنى مجد عصاعصة</div>
-                <div class="card-pills-row">
-                    <div>العمر: <strong>16 سنة</strong></div>
-                    <div>الحالة: <strong>موثق بالكامل</strong></div>
-                </div>
-            </div>
-
-            <div class="hero-card">
-                <div class="card-meta">
-                    <div class="card-tag">جنين — الحي الشرقي</div>
-                    <div class="card-date">11 ديسمبر 2022</div>
-                </div>
-                <div class="card-title-text">جنى زكارنة</div>
-                <div class="card-pills-row">
-                    <div>العمر: <strong>16 سنة</strong></div>
-                    <div>الحالة: <strong>موثق بالكامل</strong></div>
-                </div>
-            </div>
+        <div class="feed-area" id="feedArea">
+            <!-- البطاقات تتولد تلقائياً عبر البرمجة -->
         </div>
 
         <div class="adobe-footer">
@@ -315,5 +311,68 @@
         </div>
     </div>
 
+    <script>
+        // قاعدة البيانات
+        const records = [
+            { id: 1, name: "جنى مجد عصاعصة", city: "جنين", location: "جنين — حي الهدف", date: "11 ديسمبر 2022", age: "16 سنة", status: "موثق بالكامل" },
+            { id: 2, name: "جنى زكارنة", city: "جنين", location: "جنين — الحي الشرقي", date: "11 ديسمبر 2022", age: "16 سنة", status: "موثق بالكامل" }
+        ];
+
+        let currentCity = 'الكل';
+
+        function renderCards(data) {
+            const feed = document.getElementById('feedArea');
+            feed.innerHTML = '';
+
+            if (data.length === 0) {
+                feed.innerHTML = '<div style="text-align:center; color:#6b7280; padding:20px; font-size:9pt;">لا توجد نتائج مطابقة لجميع السجلات</div>';
+                return;
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'hero-card';
+                card.onclick = () => alert(`فتح سجل: ${item.name}`);
+                card.innerHTML = `
+                    <div class="card-meta">
+                        <div class="card-tag">${item.location}</div>
+                        <div class="card-date">${item.date}</div>
+                    </div>
+                    <div class="card-title-text">${item.name}</div>
+                    <div class="card-pills-row">
+                        <div>العمر: <strong>${item.age}</strong></div>
+                        <div>الحالة: <strong>${item.status}</strong></div>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+            
+            document.getElementById('total-count').innerText = data.length;
+        }
+
+        function filterData() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const filtered = records.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(query) || item.location.toLowerCase().includes(query);
+                const matchesCity = (currentCity === 'الكل') || (item.city === currentCity);
+                return matchesSearch && matchesCity;
+            });
+            renderCards(filtered);
+        }
+
+        function setFilter(city, element) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            currentCity = city;
+            filterData();
+        }
+
+        function toggleAudio() {
+            alert("تم تشغيل/إيقاف الخلفية الصوتية الأرشيفية.");
+        }
+
+        // تشغيل العرض الأولي
+        renderCards(records);
+    </script>
 </body>
 </html>
