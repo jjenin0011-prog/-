@@ -3,92 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شهداؤنا ليسوا أرقامًا | أرشيف التوثيق الفلسطيني</title>
-    
-    <!-- الخطوط العربية -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <title>أرشيف الذاكرة</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- مشغل الموسيقى/النشيد -->
-    <audio id="bg-audio" loop preload="auto">
-        <source src="background.mp3" type="audio/mpeg">
-    </audio>
+    <div class="phone-mockup">
+        <div class="ambient-glow"></div>
 
-    <!-- الواجهة الافتتاحية -->
-    <header class="hero-section">
-        <div class="audio-control-container">
-            <button id="audio-toggle" class="btn-audio">
-                <span id="audio-icon">▶</span>
-                <span id="audio-text">تشغيل الموسيقى</span>
-            </button>
+        <div class="top-nav">
+            <div class="nav-brand">أرشيف <span class="accent">الذاكرة</span></div>
+            <div class="audio-pill">♪ الخلفية الصوتية</div>
         </div>
 
-        <div class="hero-content">
-            <div class="symbol">🕊️</div>
-            <h1 class="main-title">شهداؤنا ليسوا أرقامًا</h1>
-            <p class="subtitle">«لكل اسم حكاية، ولكل شهيد ذاكرة لا تُنسى.»</p>
-            <div class="gold-divider"></div>
+        <div class="editorial-hero">
+            <div class="kicker">سجل التوثيق الوطني</div>
+            <div class="hero-heading">شهداؤنا<br>ليسوا أرقاماً</div>
+            <div class="hero-quote">«لكل اسم حكاية، ولكل شهيد ذاكرة لا تُنسى.»</div>
+
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">سجل موثق</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">جنين</div>
+                    <div class="stat-label">المحافظة الأكثر توثيقاً</div>
+                </div>
+            </div>
         </div>
 
-        <!-- إحصائية سريعة -->
-        <div class="stats-badge">
-            <span class="stats-label">عدد الشهداء الموثقين:</span>
-            <span id="martyrs-count" class="stats-number">0</span>
+        <div class="toolbar-area">
+            <input type="text" class="custom-input" value="🔍 ابحث عن اسم الشهيد أو الموقع..." readonly>
+            <div class="chip-group">
+                <div class="chip active">الكل</div>
+                <div class="chip">جنين</div>
+                <div class="chip">نابلس</div>
+                <div class="chip">الخليل</div>
+            </div>
         </div>
-    </header>
 
-    <!-- قسم البحث والتصفية -->
-    <main class="main-container">
-        <section class="filter-section">
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="ابحث عن اسم الشهيد..." autocomplete="off">
+        <div class="feed-area">
+            <div class="hero-card">
+                <div class="card-meta">
+                    <div class="card-tag">جنين — حي الهدف</div>
+                    <div class="card-date">11 ديسمبر 2022</div>
+                </div>
+                <div class="card-title-text">جنى مجد عصاعصة</div>
+                <div class="card-pills-row">
+                    <div>العمر: <strong>16 سنة</strong></div>
+                    <div>الحالة: <strong>موثق بالكامل</strong></div>
+                </div>
             </div>
-            
-            <div class="select-box">
-                <select id="region-filter">
-                    <option value="all">كل فلسطين</option>
-                    <option value="القدس">القدس الشريف</option>
-                    <option value="جنين">جنين</option>
-                    <option value="نابلس">نابلس</option>
-                    <option value="غزة">قطاع غزة</option>
-                    <option value="الخليل">الخليل</option>
-                    <option value="رام الله">رام الله والبيرة</option>
-                    <option value="طولكرم">طولكرم</option>
-                    <option value="بيت لحم">بيت لحم</option>
-                    <option value="أريحا">أريحا</option>
-                    <option value="سلفيت">سلفيت</option>
-                    <option value="قلقيلية">قلقيلية</option>
-                    <option value="طوباس">طوباس</option>
-                    <option value="الداخل">الداخل المحتل (48)</option>
-                </select>
-            </div>
-        </section>
 
-        <!-- شبكة عرض بطاقات الشهداء -->
-        <section class="martyrs-grid" id="martyrs-grid">
-            <!-- يتم تحميل البطاقات ديناميكيًا -->
-        </section>
-    </main>
-
-    <!-- النافذة المنبثقة لتفاصيل الشهيد -->
-    <div id="martyr-modal" class="modal-overlay" aria-hidden="true">
-        <div class="modal-card">
-            <button class="close-modal" id="close-modal">&times;</button>
-            <div class="modal-body" id="modal-content">
-                <!-- يتم تعبئة التفاصيل ديناميكيًا -->
+            <div class="hero-card">
+                <div class="card-meta">
+                    <div class="card-tag">جنين — الحي الشرقي</div>
+                    <div class="card-date">11 ديسمبر 2022</div>
+                </div>
+                <div class="card-title-text">جنى زكارنة</div>
+                <div class="card-pills-row">
+                    <div>العمر: <strong>16 سنة</strong></div>
+                    <div>الحالة: <strong>موثق بالكامل</strong></div>
+                </div>
             </div>
+        </div>
+
+        <div class="adobe-footer">
+            DESIGNED WITH EDITORIAL PRECISION<br>
+            حقوق حفظ الذاكرة الوطنية محفوظة © 2026
         </div>
     </div>
 
-    <footer class="footer">
-        <p>أرشيف «شهداؤنا ليسوا أرقامًا» — توثيق حر لحفظ الذاكرة الوطنية الفلسطينية.</p>
-    </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
