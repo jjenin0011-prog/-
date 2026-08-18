@@ -116,33 +116,6 @@
           margin-bottom: 20px;
         }
 
-        .stats-row {
-          display: flex;
-          gap: 8px;
-        }
-
-        .stat-box {
-          flex: 1;
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 14px;
-          padding: 12px;
-        }
-
-        .stat-number {
-          font-size: 16pt;
-          font-weight: 900;
-          color: #b91c1c;
-          line-height: 1;
-          margin-bottom: 4px;
-        }
-
-        .stat-label {
-          font-size: 8pt;
-          color: #6b7280;
-          font-weight: 600;
-        }
-
         .toolbar-area {
           padding: 10px 22px 16px;
         }
@@ -192,7 +165,7 @@
 
         .feed-area {
           padding: 0 22px 28px;
-          min-height: 200px;
+          min-height: 220px;
         }
 
         .hero-card {
@@ -253,6 +226,15 @@
           font-size: 8pt;
           color: #9ca3af;
         }
+
+        .empty-placeholder {
+          text-align: center;
+          color: #6b7280;
+          padding: 40px 20px;
+          font-size: 9pt;
+          border: 1px dashed rgba(255, 255, 255, 0.08);
+          border-radius: 16px;
+        }
     </style>
 </head>
 <body>
@@ -266,24 +248,13 @@
         </div>
 
         <div class="editorial-hero">
-            <div class="kicker">سجل التوثيق الوطني</div>
+            <div class="kicker">مشروع توثيق إعلامي</div>
             <div class="hero-heading">شهداؤنا<br>ليسوا أرقاماً</div>
             <div class="hero-quote">«لكل اسم حكاية، ولكل شهيد ذاكرة لا تُنسى.»</div>
-
-            <div class="stats-row">
-                <div class="stat-box">
-                    <div class="stat-number" id="total-count">2</div>
-                    <div class="stat-label">سجل موثق</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">جنين</div>
-                    <div class="stat-label">المحافظة الأكثر توثيقاً</div>
-                </div>
-            </div>
         </div>
 
         <div class="toolbar-area">
-            <input type="text" id="searchInput" class="custom-input" placeholder="🔍 ابحث عن اسم الشهيد أو الموقع..." oninput="filterData()">
+            <input type="text" id="searchInput" class="custom-input" placeholder="🔍 اكتب اسم الشهيد أو الموقع للبحث..." oninput="filterData()">
             <div class="chip-group">
                 <div class="chip active" onclick="setFilter('الكل', this)">الكل</div>
                 <div class="chip" onclick="setFilter('جنين', this)">جنين</div>
@@ -293,31 +264,42 @@
         </div>
 
         <div class="feed-area" id="feedArea">
-            <!-- البطاقات تتولد تلقائياً -->
+            <div class="empty-placeholder">🔍 استخدم مربع البحث أعلاه للبحث في السجلات التوثيقية.</div>
         </div>
     </div>
 
     <script>
+        // ==========================================
+        // قائمة الأسماء والبيانات (تستطيعين إضافة أي عدد هنا)
+        // ==========================================
         const records = [
-            { id: 1, name: "جنى مجد عصاعصة", city: "جنين", location: "جنين — حي الهدف", date: "11 ديسمبر 2022", age: "16 سنة", status: "موثق بالكامل" },
-            { id: 2, name: "جنى زكارنة", city: "جنين", location: "جنين — الحي الشرقي", date: "11 ديسمبر 2022", age: "16 سنة", status: "موثق بالكامل" }
+            // مثال على السجلات المسجلة في النظام:
+            // { id: 1, name: "اسم الشخص", city: "جنين", location: "جنين — المكان", date: "التاريخ", age: "العمر", status: "التوثيق" }
         ];
 
         let currentCity = 'الكل';
 
-        function renderCards(data) {
+        function renderCards(data, isSearching) {
             const feed = document.getElementById('feedArea');
             feed.innerHTML = '';
 
-            if (data.length === 0) {
-                feed.innerHTML = '<div style="text-align:center; color:#6b7280; padding:20px; font-size:9pt;">لا توجد نتائج مطابقة لجميع السجلات</div>';
+            // إذا لم يكتب الزائر شيئاً بعد في البحث
+            if (!isSearching) {
+                feed.innerHTML = '<div class="empty-placeholder">🔍 استخدم مربع البحث أعلاه للبحث في السجلات التوثيقية.</div>';
                 return;
             }
 
+            // إذا بحث ولم يجد نتائج
+            if (data.length === 0) {
+                feed.innerHTML = '<div class="empty-placeholder">لم يتم العثور على سجلات مطابقة لنص البحث.</div>';
+                return;
+            }
+
+            // عرض البطاقات المطابقة للبحث
             data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'hero-card';
-                card.onclick = () => alert(`فتح سجل: ${item.name}`);
+                card.onclick = () => alert(`فتح ملف: ${item.name}`);
                 card.innerHTML = `
                     <div class="card-meta">
                         <div class="card-tag">${item.location}</div>
@@ -331,18 +313,24 @@
                 `;
                 feed.appendChild(card);
             });
-            
-            document.getElementById('total-count').innerText = data.length;
         }
 
         function filterData() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const isSearching = query.length > 0;
+
+            if (!isSearching) {
+                renderCards([], false);
+                return;
+            }
+
             const filtered = records.filter(item => {
                 const matchesSearch = item.name.toLowerCase().includes(query) || item.location.toLowerCase().includes(query);
                 const matchesCity = (currentCity === 'الكل') || (item.city === currentCity);
                 return matchesSearch && matchesCity;
             });
-            renderCards(filtered);
+
+            renderCards(filtered, true);
         }
 
         function setFilter(city, element) {
@@ -355,8 +343,6 @@
         function toggleAudio() {
             alert("تم تشغيل/إيقاف الخلفية الصوتية الأرشيفية.");
         }
-
-        renderCards(records);
     </script>
 </body>
 </html>
