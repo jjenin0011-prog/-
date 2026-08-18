@@ -4,7 +4,247 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أرشيف الذاكرة</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+          background-color: #0b0b0e;
+          color: #ffffff;
+          padding: 10px;
+          direction: rtl;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+        }
+
+        .phone-mockup {
+          width: 100%;
+          max-width: 420px;
+          background-color: #111116;
+          border-radius: 28px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(136, 19, 25, 0.25);
+          overflow: hidden;
+          position: relative;
+        }
+
+        .ambient-glow {
+          position: absolute;
+          top: -100px;
+          right: 50%;
+          transform: translateX(50%);
+          width: 320px;
+          height: 320px;
+          background: radial-gradient(circle, rgba(153, 27, 27, 0.35) 0%, rgba(120, 0, 0, 0.12) 50%, transparent 75%);
+          filter: blur(45px);
+          pointer-events: none;
+        }
+
+        .top-nav {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 18px 22px;
+          background: rgba(17, 17, 22, 0.85);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-brand {
+          font-size: 11pt;
+          font-weight: 900;
+          color: #f3f4f6;
+        }
+
+        .nav-brand .accent {
+          color: #991b1b;
+          font-weight: 400;
+        }
+
+        .audio-pill {
+          background: linear-gradient(135deg, rgba(153, 27, 27, 0.3), rgba(120, 0, 0, 0.15));
+          border: 1px solid rgba(153, 27, 27, 0.5);
+          color: #fecdd3;
+          padding: 6px 14px;
+          border-radius: 30px;
+          font-size: 8.5pt;
+          font-weight: 600;
+        }
+
+        .editorial-hero {
+          padding: 28px 22px 20px;
+          text-align: right;
+        }
+
+        .kicker {
+          display: inline-block;
+          font-size: 8pt;
+          font-weight: 700;
+          color: #dc2626;
+          background: rgba(153, 27, 27, 0.18);
+          padding: 4px 12px;
+          border-radius: 4px;
+          border-right: 3px solid #991b1b;
+          margin-bottom: 10px;
+        }
+
+        .hero-heading {
+          font-size: 22pt;
+          font-weight: 900;
+          line-height: 1.2;
+          color: #ffffff;
+          margin-bottom: 10px;
+        }
+
+        .hero-quote {
+          font-size: 9.5pt;
+          color: #9ca3af;
+          line-height: 1.6;
+          border-right: 2px solid rgba(153, 27, 27, 0.7);
+          padding-right: 10px;
+          margin-bottom: 20px;
+        }
+
+        .stats-row {
+          display: flex;
+          gap: 8px;
+        }
+
+        .stat-box {
+          flex: 1;
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 14px;
+          padding: 12px;
+        }
+
+        .stat-number {
+          font-size: 16pt;
+          font-weight: 900;
+          color: #b91c1c;
+          line-height: 1;
+          margin-bottom: 4px;
+        }
+
+        .stat-label {
+          font-size: 8pt;
+          color: #6b7280;
+          font-weight: 600;
+        }
+
+        .toolbar-area {
+          padding: 10px 22px 16px;
+        }
+
+        .custom-input {
+          width: 100%;
+          padding: 10px 14px;
+          background-color: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 10px;
+          color: #e5e7eb;
+          font-size: 9pt;
+          margin-bottom: 10px;
+        }
+
+        .chip-group {
+          display: flex;
+          gap: 6px;
+        }
+
+        .chip {
+          flex: 1;
+          text-align: center;
+          padding: 6px 4px;
+          font-size: 8pt;
+          color: #9ca3af;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          font-weight: 600;
+        }
+
+        .chip.active {
+          background: #7f1d1d;
+          color: #ffffff;
+          border: 1px solid #991b1b;
+          box-shadow: 0 4px 14px rgba(127, 29, 29, 0.5);
+        }
+
+        .feed-area {
+          padding: 0 22px 20px;
+        }
+
+        .hero-card {
+          background: linear-gradient(145deg, rgba(28, 28, 36, 0.8) 0%, rgba(15, 15, 20, 0.95) 100%);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 16px;
+          padding: 16px;
+          margin-bottom: 12px;
+          position: relative;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-card::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 100%;
+          height: 3px;
+          background: linear-gradient(90deg, #991b1b 0%, transparent 85%);
+          border-radius: 16px 16px 0 0;
+        }
+
+        .card-meta {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 8px;
+        }
+
+        .card-tag {
+          font-size: 8pt;
+          color: #ef4444;
+          font-weight: 700;
+        }
+
+        .card-date {
+          font-size: 7.5pt;
+          color: #6b7280;
+        }
+
+        .card-title-text {
+          font-size: 13pt;
+          font-weight: 800;
+          color: #ffffff;
+          margin-bottom: 10px;
+        }
+
+        .card-pills-row {
+          display: flex;
+          justify-content: space-between;
+          font-size: 8pt;
+          color: #9ca3af;
+        }
+
+        .adobe-footer {
+          padding: 18px;
+          text-align: center;
+          border-top: 1px solid rgba(255, 255, 255, 0.04);
+          background: #0b0b0e;
+          font-size: 7.5pt;
+          color: #4b5563;
+        }
+    </style>
 </head>
 <body>
 
