@@ -61,6 +61,7 @@
           padding: 18px 22px;
           background: rgba(17, 17, 22, 0.85);
           border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          position: relative;
         }
 
         .nav-brand {
@@ -74,13 +75,19 @@
           font-weight: 400;
         }
 
+        .nav-controls {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+
         .audio-pill {
           background: linear-gradient(135deg, rgba(153, 27, 27, 0.3), rgba(120, 0, 0, 0.15));
           border: 1px solid rgba(153, 27, 27, 0.5);
           color: #fecdd3;
-          padding: 6px 14px;
+          padding: 6px 12px;
           border-radius: 30px;
-          font-size: 8.5pt;
+          font-size: 8pt;
           font-weight: 600;
           cursor: pointer;
           user-select: none;
@@ -91,6 +98,79 @@
           background: #991b1b;
           color: #ffffff;
           box-shadow: 0 0 10px rgba(153, 27, 27, 0.6);
+        }
+
+        /* تنسيق قائمة الثلاث نقاط */
+        .menu-wrapper {
+          position: relative;
+        }
+
+        .menu-btn {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #fff;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 16px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .menu-btn:hover {
+          background: rgba(153, 27, 27, 0.3);
+          border-color: rgba(153, 27, 27, 0.5);
+        }
+
+        .dropdown-menu {
+          display: none;
+          position: absolute;
+          left: 0;
+          top: 40px;
+          background: #1a1a24;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 12px;
+          padding: 12px;
+          width: 180px;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+          z-index: 1000;
+          text-align: right;
+        }
+
+        .dropdown-menu p {
+          font-size: 8pt;
+          color: #9ca3af;
+          margin-bottom: 2px;
+        }
+
+        .dropdown-menu .email-text {
+          font-size: 8.5pt;
+          color: #ffffff;
+          font-weight: 700;
+          margin-bottom: 8px;
+          word-break: break-all;
+        }
+
+        .dropdown-menu hr {
+          border: 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          margin: 8px 0;
+        }
+
+        .dropdown-menu a {
+          display: block;
+          text-decoration: none;
+          color: #ef4444;
+          font-size: 9pt;
+          font-weight: 700;
+          transition: color 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+          color: #f87171;
         }
 
         .editorial-hero {
@@ -179,7 +259,6 @@
           min-height: 220px;
         }
 
-        /* تصميم بطاقة الاستعراض المبسطة */
         .hero-card {
           background: linear-gradient(145deg, rgba(28, 28, 36, 0.95) 0%, rgba(15, 15, 20, 0.98) 100%);
           border: 1px solid rgba(255, 255, 255, 0.08);
@@ -262,7 +341,6 @@
           text-align: center;
         }
 
-        /* --- تصميم نافذة التفاصيل المكبرة (Full-Screen Modal) --- */
         .modal-overlay {
           position: fixed;
           top: 0;
@@ -408,7 +486,21 @@
 
         <div class="top-nav">
             <div class="nav-brand">أرشيف <span class="accent">الذاكرة</span></div>
-            <div class="audio-pill" id="audioBtn" onclick="toggleAudio()">♪ الخلفية الصوتية</div>
+            
+            <div class="nav-controls">
+                <div class="audio-pill" id="audioBtn" onclick="toggleAudio()">♪ الخلفية الصوتية</div>
+                
+                <!-- قائمة الثلاث نقاط -->
+                <div class="menu-wrapper">
+                    <div class="menu-btn" id="menuBtn" onclick="toggleMenu(event)">⋮</div>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <p>للتواصل معنا:</p>
+                        <div class="email-text">jjenin0011@gmail.com</div>
+                        <hr>
+                        <a href="https://forms.gle/z7C62xPRrSTyChJJ7" target="_blank">+ إضافة شهيد</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="editorial-hero">
@@ -428,7 +520,7 @@
         </div>
 
         <div class="feed-area" id="feedArea">
-            <!-- سيتم تحميل البطاقات العشوائية هنا تلقائياً -->
+            <!-- سيتم تحميل البطاقات هنا تلقائياً -->
         </div>
     </div>
 
@@ -603,6 +695,19 @@
                 closeModal();
             }
         }
+
+        function toggleMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('dropdownMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
+        window.onclick = function(event) {
+            const menu = document.getElementById('dropdownMenu');
+            if (menu && menu.style.display === 'block') {
+                menu.style.display = 'none';
+            }
+        };
 
         function updateDisplay() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
