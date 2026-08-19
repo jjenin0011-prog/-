@@ -582,7 +582,7 @@
                 card.innerHTML = `
                     <div class="card-top-section">
                         <div class="martyr-img-wrapper">
-                            <img src="${imageUrl}" alt="${item.name}" class="martyr-img" onerror="this.src='https://via.placeholder.com/150/1c1c24/888888?text=%D8%A7%D9%84%D8%B0%D8%A7%D9%83%D8%B1%D8%A9'">
+                            <img src="${imageUrl}" alt="${item.name}" class="martyr-img" onerror="this.src='https://via.placeholder.com/150/1c1c24/888888?text=%D8%A7%D9%84%D8%B0%D8%A7%D9%84%D8%B0%D8%A7%D9%83%D8%B1%D8%A9'">
                         </div>
                         <div class="card-header-info">
                             <span class="card-tag">مدينة ${item.city}</span>
@@ -639,8 +639,18 @@
             }
         };
 
+        // دالة لتوحيد الحروف العربية (إزالة الهمزات وتوحيدها) لضمان نجاح البحث بالاسم بدقة
+        function normalizeArabic(text) {
+            if (!text) return "";
+            return text.toString()
+                .replace(/[أإآء]/g, 'ا')
+                .replace(/ة/g, 'ه')
+                .toLowerCase();
+        }
+
         function updateDisplay() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const rawQuery = document.getElementById('searchInput').value.trim();
+            const query = normalizeArabic(rawQuery);
 
             let cityFiltered = records;
             if (currentCity !== 'الكل') {
@@ -649,15 +659,15 @@
 
             if (query.length > 0) {
                 const searchResults = cityFiltered.filter(item => 
-                    item.name.toLowerCase().includes(query) ||
-                    (item.nickname && item.nickname.toLowerCase().includes(query)) ||
-                    item.location.toLowerCase().includes(query) ||
-                    (item.story && item.story.toLowerCase().includes(query)) ||
-                    item.deathDate.includes(query)
+                    normalizeArabic(item.name).includes(query) ||
+                    (item.nickname && normalizeArabic(item.nickname).includes(query)) ||
+                    normalizeArabic(item.location).includes(query) ||
+                    normalizeArabic(item.city).includes(query) ||
+                    (item.story && normalizeArabic(item.story).includes(query)) ||
+                    (item.deathDate && item.deathDate.includes(rawQuery))
                 );
                 renderCards(searchResults);
             } else {
-                // عرض جميع السجلات بدلاً من اقتطاعها
                 renderCards(cityFiltered);
             }
         }
