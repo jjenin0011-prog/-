@@ -5,7 +5,7 @@ const records = [
     nickname: "أبو فتحي / أمير كتائب شهداء الأقصى",
     city: "نابلس",
     location: "البلدة القديمة - نابلس",
-    image: "https://upload.wikimedia.org/wikipedia/ar/0/03/%D8%A5%D8%A8%D8%B1%D8%A7%D9%87%D9%8A%D9%85_%D8%A7%D9%84%D9%86%D8%A7%D8%A8%D9%84%D8%B3%D9%8A.jpg",
+    image: "images/martyr1.jpg",
     birthDate: "2003/10/13",
     deathDate: "2022/08/09",
     howMartyred: "اشتباك مسلح عقب حصار منزل في البلدة القديمة",
