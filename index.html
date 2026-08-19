@@ -658,14 +658,16 @@
             }
 
             if (query.length > 0) {
-                // البحث مقتصر حصراً على اسم الشهيد أو لقبه لكي يظهر الشهيد المقصود بدقة تامة وبمفرده
+                // البحث مقتصر حصراً على اسم الشهيد أو لقبه عند الكتابة في مربع البحث
                 const searchResults = cityFiltered.filter(item => 
                     normalizeArabic(item.name).includes(query) ||
                     (item.nickname && normalizeArabic(item.nickname).includes(query))
                 );
                 renderCards(searchResults);
             } else {
-                renderCards(cityFiltered);
+                // عند فتح الموقع أو إفراغ خانة البحث: يتم خلط وعرض البطاقات بشكل عشوائي ومتجدد دائماً
+                const shuffled = [...cityFiltered].sort(() => Math.random() - 0.5);
+                renderCards(shuffled);
             }
         }
 
