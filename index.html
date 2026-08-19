@@ -561,11 +561,6 @@
     <script>
         let currentCity = 'الكل';
 
-        function getRandomRecords(arr, count) {
-            const shuffled = [...arr].sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, count);
-        }
-
         function renderCards(data) {
             const feed = document.getElementById('feedArea');
             feed.innerHTML = '';
@@ -662,8 +657,8 @@
                 );
                 renderCards(searchResults);
             } else {
-                const randomSelection = getRandomRecords(cityFiltered, 3);
-                renderCards(randomSelection);
+                // عرض جميع السجلات بدلاً من اقتطاعها
+                renderCards(cityFiltered);
             }
         }
 
