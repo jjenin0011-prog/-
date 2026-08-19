@@ -517,7 +517,7 @@
         </div>
 
         <div class="toolbar-area">
-            <input type="text" id="searchInput" class="custom-input" placeholder="🔍 ابحث بالاسم، القصة، أو تاريخ الاستشهاد..." oninput="filterData()">
+            <input type="text" id="searchInput" class="custom-input" placeholder="🔍 ابحث باسم الشهيد أو لقبه..." oninput="filterData()">
             <div class="chip-group">
                 <div class="chip active" onclick="setFilter('الكل', this)">الكل</div>
                 <div class="chip" onclick="setFilter('جنين', this)">جنين</div>
@@ -602,7 +602,7 @@
 
             const imageUrl = item.image && item.image.trim() !== "" 
                 ? item.image 
-                : "https://via.placeholder.com/400x250/1c1c24/888888?text=%D8%A7%D9%84%D8%B0%D8%A7%D9%83%D8%B1%D8%A9";
+                : "https://via.placeholder.com/400x250/1c1c24/888888?text=%D8%A7%D9%84%D8%B0%D8%A7%D9%84%D8%B0%D8%A7%D9%83%D8%B1%D8%A9";
 
             document.getElementById('mImg').src = imageUrl;
             document.getElementById('mName').innerText = item.name;
@@ -658,13 +658,10 @@
             }
 
             if (query.length > 0) {
+                // البحث مقتصر حصراً على اسم الشهيد أو لقبه لكي يظهر الشهيد المقصود بدقة تامة وبمفرده
                 const searchResults = cityFiltered.filter(item => 
                     normalizeArabic(item.name).includes(query) ||
-                    (item.nickname && normalizeArabic(item.nickname).includes(query)) ||
-                    normalizeArabic(item.location).includes(query) ||
-                    normalizeArabic(item.city).includes(query) ||
-                    (item.story && normalizeArabic(item.story).includes(query)) ||
-                    (item.deathDate && item.deathDate.includes(rawQuery))
+                    (item.nickname && normalizeArabic(item.nickname).includes(query))
                 );
                 renderCards(searchResults);
             } else {
