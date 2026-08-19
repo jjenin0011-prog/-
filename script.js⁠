@@ -1,36 +1,5 @@
-const martyrsData = [
-    {
-        id: 1,
-        name: "اسم الشهيد التجريبي الأول",
-        nickname: "أبو العز",
-        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400",
-        dob: "1998-05-14",
-        age: "25 عامًا",
-        residence: "القدس الشريف",
-        martyrdomDate: "2023-11-12",
-        martyrdomPlace: "البلدة القديمة، القدس",
-        story: "هنا تُكتب سيرة الشهيد وقصة استشهاده التفصيلية والتضحيات التي قدمها.\nيمكن كتابة النص على عدة أسطر ليشمل المواقف البارزة والذاكرة الوطنية التي تركها خلفه.",
-        sources: [
-            "مركز توثيق الذاكرة الوطنية",
-            "شهادات عائلية موثقة - 2023"
-        ]
-    },
-    {
-        id: 2,
-        name: "اسم الشهيد التجريبي الثاني",
-        nickname: "صقر المخيم",
-        image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400",
-        dob: "2001-01-20",
-        age: "22 عامًا",
-        residence: "جنين",
-        martyrdomDate: "2023-08-05",
-        martyrdomPlace: "مخيم جنين",
-        story: "قصة توثيقية تجريبية للشهيد الثاني تشرح المكان والظروف التاريخية والاستبسال في الدفاع عن الأرض.",
-        sources: [
-            "الأرشيف التوثيقي الميداني"
-        ]
-    }
-];
+// شيل المصفوفة التجريبية martyrsData بالكامل، واستخدم records من martyrs.js مباشرة
+// (لازم martyrs.js يكون محمّل قبل script.js بملف index.html)
 
 const martyrsGrid = document.getElementById('martyrs-grid');
 const searchInput = document.getElementById('search-input');
@@ -40,27 +9,11 @@ const modal = document.getElementById('martyr-modal');
 const modalContent = document.getElementById('modal-content');
 const closeModalBtn = document.getElementById('close-modal');
 
-const bgAudio = document.getElementById('bg-audio');
-const audioToggleBtn = document.getElementById('audio-toggle');
-const audioIcon = document.getElementById('audio-icon');
-const audioText = document.getElementById('audio-text');
-let isPlaying = false;
+const DEFAULT_IMAGE = "https://via.placeholder.com/400x500/1a1a1a/991b1b?text=%D8%A7%D9%84%D8%B0%D8%A7%D9%83%D8%B1%D8%A9";
 
-audioToggleBtn.addEventListener('click', () => {
-    if (isPlaying) {
-        bgAudio.pause();
-        audioIcon.textContent = '▶';
-        audioText.textContent = 'تشغيل الموسيقى';
-    } else {
-        bgAudio.play().then(() => {
-            audioIcon.textContent = '⏸';
-            audioText.textContent = 'إيقاف الموسيقى';
-        }).catch(err => {
-            console.log("تطلب المتصفح تفاعلاً أولاً:", err);
-        });
-    }
-    isPlaying = !isPlaying;
-});
+function getImage(martyr){
+    return martyr.image && martyr.image.trim() !== "" ? martyr.image : DEFAULT_IMAGE;
+}
 
 function renderMartyrs(data) {
     martyrsGrid.innerHTML = '';
@@ -78,13 +31,13 @@ function renderMartyrs(data) {
 
         card.innerHTML = `
             <div class="card-image-wrapper">
-                <img src="${martyr.image}" alt="${martyr.name}" class="card-image" loading="lazy">
+                <img src="${getImage(martyr)}" alt="${martyr.name}" class="card-image" loading="lazy">
             </div>
             <div class="card-info">
                 <h3 class="card-name">${martyr.name}</h3>
                 <div class="card-meta">
-                    <span>📍 ${martyr.residence}</span>
-                    <span>🗓️ ${martyr.martyrdomDate}</span>
+                    <span>📍 ${martyr.city}</span>
+                    <span>🗓️ ${martyr.deathDate}</span>
                 </div>
             </div>
         `;
@@ -93,23 +46,19 @@ function renderMartyrs(data) {
 }
 
 function openMartyrModal(martyr) {
-    const sourcesHTML = martyr.sources && martyr.sources.length > 0 
-        ? martyr.sources.map(src => `<li>${src}</li>`).join('')
-        : '<li>لا توجد مصادر مضافة بعد.</li>';
-
     modalContent.innerHTML = `
         <div class="modal-header-flex">
-            <img src="${martyr.image}" alt="${martyr.name}" class="modal-img">
+            <img src="${getImage(martyr)}" alt="${martyr.name}" class="modal-img">
             <div class="modal-details">
                 <h2 class="modal-title">${martyr.name}</h2>
                 <p class="modal-nickname">${martyr.nickname ? `اللقب: ${martyr.nickname}` : ''}</p>
 
                 <div class="info-grid">
-                    <div class="info-item"><span>مكان السكن:</span> ${martyr.residence}</div>
-                    <div class="info-item"><span>العمر:</span> ${martyr.age}</div>
-                    <div class="info-item"><span>تاريخ الميلاد:</span> ${martyr.dob}</div>
-                    <div class="info-item"><span>تاريخ الاستشهاد:</span> ${martyr.martyrdomDate}</div>
-                    <div class="info-item" style="grid-column: span 2;"><span>مكان الاستشهاد:</span> ${martyr.martyrdomPlace}</div>
+                    <div class="info-item"><span>المدينة:</span> ${martyr.city}</div>
+                    <div class="info-item"><span>مكان الاستشهاد:</span> ${martyr.location}</div>
+                    <div class="info-item"><span>تاريخ الميلاد:</span> ${martyr.birthDate}</div>
+                    <div class="info-item"><span>تاريخ الاستشهاد:</span> ${martyr.deathDate}</div>
+                    <div class="info-item" style="grid-column: span 2;"><span>طريقة الاستشهاد:</span> ${martyr.howMartyred}</div>
                 </div>
             </div>
         </div>
@@ -117,13 +66,6 @@ function openMartyrModal(martyr) {
         <div class="story-section">
             <h3 class="story-title">📖 قصة الاستشهاد والذاكرة</h3>
             <p class="story-text">${martyr.story}</p>
-        </div>
-
-        <div class="sources-section">
-            <h4 class="sources-title">🔍 مصادر التوثيق</h4>
-            <ul class="sources-list">
-                ${sourcesHTML}
-            </ul>
         </div>
     `;
 
@@ -147,11 +89,10 @@ function filterMartyrs() {
     const searchTerm = searchInput.value.trim().toLowerCase();
     const selectedRegion = regionFilter.value;
 
-    const filtered = martyrsData.filter(martyr => {
+    const filtered = records.filter(martyr => {
         const matchesName = martyr.name.toLowerCase().includes(searchTerm) || 
                             (martyr.nickname && martyr.nickname.toLowerCase().includes(searchTerm));
-        const matchesRegion = selectedRegion === 'all' || martyr.residence.includes(selectedRegion);
-
+        const matchesRegion = selectedRegion === 'all' || martyr.city.includes(selectedRegion);
         return matchesName && matchesRegion;
     });
 
@@ -161,4 +102,4 @@ function filterMartyrs() {
 searchInput.addEventListener('input', filterMartyrs);
 regionFilter.addEventListener('change', filterMartyrs);
 
-renderMartyrs(martyrsData);
+renderMartyrs(records);
